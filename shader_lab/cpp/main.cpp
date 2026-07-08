@@ -1,13 +1,21 @@
 #include <QApplication>
-#include "mainwindow.hpp"
+#include <QQmlApplicationEngine>
+#include <QUrl>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    MainWindow window;
-    window.resize(100, 200);
-    window.show();
+    QQmlApplicationEngine engine;
+
+    QObject::connect(
+        &engine,
+        &QQmlApplicationEngine::objectCreationFailed,
+        &app,
+        []() { QCoreApplication::exit(-1); },
+        Qt::QueuedConnection);
+
+    engine.loadFromModule("hello", "Main");
 
     return app.exec();
 }
