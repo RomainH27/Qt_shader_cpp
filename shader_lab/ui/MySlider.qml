@@ -1,56 +1,50 @@
 import QtQuick
-import QtQuick.Layouts
 import QtQuick.Controls
+import QtQuick.Layouts
 import hello
 
-Item{
-    id : root
-    property url imageUrl : ""
-    // property color frameColor
-    // property string someString : ""
+Item {
+    id: root
 
-    // Rectangle{
-    //     width: root.width
-    //     height: root.height
-    //     // color: "red"
-    //     border.color: "black"
-
-    //     Image{
-    //         anchors.fill: parent
-    //         anchors.margins: 30
-    //         source: root.imageUrl
-    //     }
-    // }
+    property url imageUrl: ""
 
     ColumnLayout {
         anchors.fill: parent
 
-        layer.effect: ShaderEffect {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            property variant src: test_scan.GetData()
-            property variant shader_opacity: slider_one.value
-            vertexShader: " ://shaders/custom_shader.vert.qsb"
-            fragmentShader: " ://shaders/custom_shader.frag.qsb"
-        }
-
-        Slider{
+        Slider {
             id: slider_one
+
             Layout.fillWidth: true
             Layout.preferredHeight: 20
-
             from: 0
             to: 1
-       }
-    }
-    
+        }
 
-    ScanObject{
+        Image {
+            id: scanImage
+
+            source: "image://scanProvider/test"
+            visible: false
+        }
+
+        ShaderEffect {
+            property variant src: scanImage
+            property real slider_test: slider_one.value
+
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            vertexShader: "qrc:/shaders/custom_shader.vert.qsb"
+            fragmentShader: "qrc:/shaders/custom_shader.frag.qsb"
+        }
+
+    }
+
+    ScanObject {
         id: test_scan
-        
+
         Component.onCompleted: {
-                test_scan.ComputeData();
-                console.log("Done eheh");
+            test_scan.ComputeData();
+            console.log("Done eheh");
         }
     }
 

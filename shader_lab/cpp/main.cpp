@@ -11,6 +11,8 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<ScanObject>("hello", 1, 0, "ScanObject");
 
+    engine.addImageProvider(QStringLiteral("scanProvider"), new ColorImageProvider);
+
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,

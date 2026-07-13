@@ -5,17 +5,13 @@ layout(location = 0) out vec4 fragColor;
 layout(std140, binding = 0) uniform buf {
     mat4 qt_Matrix;
     float qt_Opacity;
+
+    float slider_test;
 };
 
 layout(binding = 1) uniform sampler2D src;
 
-layout(std140, binding = 2) uniform custom {
-    float shader_opacity;
-};
-
 void main() {
     vec4 tex = texture(src, coord);
-    fragColor = vec4(vec3(dot(tex.rgb,
-                     vec3(0.344, 0.5, 0.156))),
-                          tex.a) * qt_Opacity * shader_opacity;
+    fragColor = tex * qt_Opacity * slider_test;
 }
