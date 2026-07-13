@@ -3,27 +3,26 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
 
+
 Window {
     visible: true
-    width: 640
-    height: 480
+    width: 1000
+    height: 600
     title: "Shader Lab"
 
     ColumnLayout {
         anchors.fill: parent
 
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            color: "red"
+        MySlider{
+            // Layout.fillWidth: true
+            // Layout.fillHeight: true
+            width: 600
+            height : 600
+            imageUrl: "qrc:/qt/qml/hello/resources/images.jpg"
+            // someString: "red"
         }
 
-        Button {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            // onClicked: model.submit()
-            text: "Ok"
-        }
+      
 
     }
 
