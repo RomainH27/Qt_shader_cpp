@@ -17,7 +17,7 @@ Item {
             id: scanImage
 
             sourceSize.width: root.width
-            sourceSize.height: root.height / 1.5
+            sourceSize.height: root.width / ScanSettings.ratio
             source: "image://scanProvider/test"
             visible: false
         }
@@ -43,6 +43,7 @@ Item {
 
             Layout.fillWidth: true
             Layout.preferredHeight: 20
+            value: 0.5
             from: 0
             to: 1
         }
@@ -65,15 +66,6 @@ Item {
             to: 1
         }
 
-    }
-
-    ScanObject {
-        id: test_scan
-
-        Component.onCompleted: {
-            test_scan.ComputeData();
-            console.log("Done eheh");
-        }
     }
 
 }

@@ -1,26 +1,32 @@
+#include "scan.hpp"
 #include <QApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QUrl>
-#include "scan.hpp"
 
-int main(int argc, char *argv[])
-{
-    QApplication app(argc, argv);
+int main(int argc, char *argv[]) {
+  QApplication app(argc, argv);
 
-    QQmlApplicationEngine engine;
+  QQmlApplicationEngine engine;
 
-    qmlRegisterType<ScanObject>("hello", 1, 0, "ScanObject");
+  qmlRegisterType<ScanObject>("hello", 1, 0, "ScanObject");
 
-    engine.addImageProvider(QStringLiteral("scanProvider"), new ColorImageProvider);
+  ScanObject scan;
 
-    QObject::connect(
-        &engine,
-        &QQmlApplicationEngine::objectCreationFailed,
-        &app,
-        []() { QCoreApplication::exit(-1); },
-        Qt::QueuedConnection);
+  engine.addImageProvider(QStringLiteral("scanProvider"),
+                          new ColorImageProvider(&scan));
 
-    engine.loadFromModule("hello", "Main");
+//   engine.rootContext()->setContextProperty("scanSettings", &scan);
 
-    return app.exec();
+  qmlRegisterSingletonInstance("hello", 1, 0, "ScanSettings", &scan);
+
+  QObject::connect(
+      &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
+      []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
+
+  engine.loadFromModule("hello", "Main");
+
+  scan.ComputeData();
+
+  return app.exec();
 }
