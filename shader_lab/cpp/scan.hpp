@@ -15,8 +15,10 @@ signals:
 public:
   static constexpr int kScanSize{2000};
 
+  static constexpr int kTempRowNumber{3000};
+
   Q_PROPERTY(float test_val READ GetTest WRITE SetTest NOTIFY valueChanged)
-  Q_PROPERTY(float ratio READ GetRatio)
+  Q_PROPERTY(float ratio READ GetRatio NOTIFY valueChanged)
 
   Q_INVOKABLE void ComputeData();
   Q_INVOKABLE std::vector<std::array<float, kScanSize>> GetData();
@@ -25,6 +27,7 @@ public:
   void SetTest(float test_val);
 
   float GetRatio();
+  QPixmap ToPixmap() const;
 
 private:
   std::vector<std::array<float, kScanSize>> m_scan_data{};
