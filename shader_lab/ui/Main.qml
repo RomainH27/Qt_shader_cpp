@@ -13,8 +13,8 @@ Window {
         anchors.fill: parent
 
         MySlider {
-            width: 600
-            height: 600
+            Layout.fillWidth: true
+            Layout.fillHeight: true
             imageUrl: "qrc:/qt/qml/hello/resources/images.jpg"
         }
 

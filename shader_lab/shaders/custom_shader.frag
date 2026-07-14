@@ -13,5 +13,7 @@ layout(binding = 1) uniform sampler2D src;
 
 void main() {
     vec4 tex = texture(src, coord);
+
+    
     fragColor = tex * qt_Opacity * slider_test;
 }

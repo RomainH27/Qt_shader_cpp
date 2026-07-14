@@ -1,8 +1,10 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
 #include <QObject>
 #include <QQuickImageProvider>
+#include <QPainter>
 
 class ScanObject : public QObject
 {
@@ -31,26 +33,31 @@ private:
 
 class ColorImageProvider : public QQuickImageProvider
 {
+
 public:
     ColorImageProvider()
-               : QQuickImageProvider(QQuickImageProvider::Image)
+               : QQuickImageProvider(QQuickImageProvider::Pixmap)
     {
     }
 
-   QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize) override
+    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize) override
     {
-        // 'id' is whatever comes after "image://myprovider/"
-        // e.g. for "image://myprovider/foo/bar", id == "foo/bar"
+        const int defaultW = 10, defaultH = 10;
 
-        QImage image(256, 256, QImage::Format_ARGB32_Premultiplied);
-        image.fill(Qt::magenta); // obvious "missing image" placeholder
+        QColor color(id);
+        if (!color.isValid())
+            color = Qt::magenta;
+
+        QSize targetSize = (requestedSize.width() > 0 && requestedSize.height() > 0)
+                                ? requestedSize
+                                : QSize(defaultW, defaultH);
 
         if (size)
-            *size = image.size();
+            *size = targetSize;
 
-        if (requestedSize.width() > 0 && requestedSize.height() > 0)
-            image = image.scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-        return image;
+        QPixmap pixmap(targetSize);
+        pixmap.fill(color);
+        return pixmap;
     }
+
 };
